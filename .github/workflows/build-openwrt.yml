@@ -49,7 +49,7 @@ jobs:
     - name: Clone source code
       env: 
         REPO_URL: https://github.com/a520ass/openwrt
-        REPO_BRANCH: master
+        REPO_BRANCH: v19.07.0
       run: git clone $REPO_URL -b $REPO_BRANCH openwrt
 
     - name: Update feeds
@@ -70,8 +70,8 @@ jobs:
         ../$DIY_SH
         make defconfig
 
-    #- name: SSH connection to Actions
-     # uses: P3TERX/debugger-action@master
+    - name: SSH connection to Actions
+      uses: P3TERX/debugger-action@master
 
     - name: Download package
       run: |
