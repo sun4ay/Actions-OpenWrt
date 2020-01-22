@@ -1,8 +1,20 @@
+#!/bin/bash
+
+# 编译ATH79特定固件
+cat >> .config <<EOF
 CONFIG_TARGET_ath79=y
 CONFIG_TARGET_ath79_generic=y
 CONFIG_TARGET_ath79_generic_DEVICE_tplink_tl-wr845n-v3=y
+EOF
+
+# PACKAGE支持
+cat >> .config <<EOF
 # CONFIG_PACKAGE_dnsmasq is not set
 CONFIG_PACKAGE_dnsmasq-full=y
+EOF
+
+# LuCI支持
+cat >> .config <<EOF
 CONFIG_PACKAGE_luci=y
 CONFIG_LUCI_LANG_zh-cn=y
 CONFIG_PACKAGE_luci-app-flowoffload=y
@@ -13,8 +25,15 @@ CONFIG_PACKAGE_luci-app-upnp=y
 CONFIG_PACKAGE_luci-app-watchcat=y
 CONFIG_PACKAGE_luci-app-wifischedule=y
 CONFIG_PACKAGE_luci-app-wol=y
+EOF
+
+# LuCI主题
+cat >> .config <<EOF
 CONFIG_PACKAGE_luci-theme-material=y
-#
+EOF
+
+# USB支持（默认不启用）
+cat >> .config <<EOF
 #CONFIG_PACKAGE_kmod-usb-core=y
 #CONFIG_PACKAGE_kmod-usb-ehci=y
 #CONFIG_PACKAGE_kmod-usb-ledtrig-usbport=y
@@ -45,3 +64,4 @@ CONFIG_PACKAGE_luci-theme-material=y
 #CONFIG_PACKAGE_fdisk=y
 #CONFIG_PACKAGE_blkid=y
 #CONFIG_PACKAGE_lsblk=y
+EOF
