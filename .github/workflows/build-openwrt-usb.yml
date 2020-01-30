@@ -82,16 +82,16 @@ jobs:
     - name: Cache staging_dir
       uses: actions/cache@v1
       with:
-        path: staging_dir
-        key: ${{ runner.os }}-openwrt_sd-${{ hashFiles('**/include/version.mk') }}
+        path: ${{ GITHUB_WORKSPACE }}/staging_dir
+        key: ${{ runner.os }}-openwrt_v19_07_1_sd-${{ hashFiles('**/include/version.mk') }}
         restore-keys: |
           ${{ runner.os }}-openwrt_sd-
 
     - name: Cache build_dir
       uses: actions/cache@v1
       with:
-        path: build_dir
-        key: ${{ runner.os }}-openwrt_bd-${{ hashFiles('**/include/version.mk') }}
+        path: ${{ GITHUB_WORKSPACE }}/build_dir
+        key: ${{ runner.os }}-openwrt_v19_07_1_bd-${{ hashFiles('**/include/version.mk') }}
         restore-keys: |
           ${{ runner.os }}-openwrt_bd-
 
