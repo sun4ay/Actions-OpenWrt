@@ -49,7 +49,7 @@ jobs:
     - name: Clone source code
       env: 
         REPO_URL: https://github.com/a520ass/openwrt
-        REPO_BRANCH: v19.07.0
+        REPO_BRANCH: v19.07.1
       run: git clone $REPO_URL -b $REPO_BRANCH openwrt
 
     - name: Update feeds
@@ -78,6 +78,22 @@ jobs:
         cd openwrt && make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+
+    - name: Cache staging_dir
+      uses: actions/cache@v1
+      with:
+        path: staging_dir
+        key: ${{ runner.os }}-openwrt_sd-${{ hashFiles('**/include/version.mk') }}
+        restore-keys: |
+          ${{ runner.os }}-openwrt_sd-
+
+    - name: Cache build_dir
+      uses: actions/cache@v1
+      with:
+        path: build_dir
+        key: ${{ runner.os }}-openwrt_bd-${{ hashFiles('**/include/version.mk') }}
+        restore-keys: |
+          ${{ runner.os }}-openwrt_bd-
 
     - name: Multi-thread compile
       run: |
