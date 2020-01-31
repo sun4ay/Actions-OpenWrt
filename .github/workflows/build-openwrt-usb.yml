@@ -9,8 +9,8 @@
 name: Build OpenWrt USB
 
 on: 
-  release:
-    types: [published]
+#  release:
+#    types: [published]
   push:
     branches: 
       - master
@@ -83,7 +83,7 @@ jobs:
 #      uses: actions/cache@v1
 #      with:
 #        path: ${{ github.workspace }}/openwrt/staging_dir
-#        key: ${{ runner.os }}-openwrt_v19_07_1_sd-${{ hashFiles('**/include/version.mk') }}
+#        key: ${{ runner.os }}-openwrt_sd-${{ hashFiles('**/include/version.mk') }}
 #        restore-keys: |
 #          ${{ runner.os }}-openwrt_sd-
 #
@@ -91,7 +91,7 @@ jobs:
 #      uses: actions/cache@v1
 #      with:
 #        path: ${{ github.workspace }}/openwrt/build_dir
-#        key: ${{ runner.os }}-openwrt_v19_07_1_bd-${{ hashFiles('**/include/version.mk') }}
+#        key: ${{ runner.os }}-openwrt_bd-${{ hashFiles('**/include/version.mk') }}
 #        restore-keys: |
 #          ${{ runner.os }}-openwrt_bd-
 
@@ -127,3 +127,30 @@ jobs:
       with:
         name: OpenWrt_firmware
         path: ${{ env.FIRMWARE }}
+
+
+    - name: zip files # This would actually build your project, using zip for an example artifact
+      run: |
+        zip --junk-paths my-artifact ${{ env.FIRMWARE }}/*
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_path: ./my-artifact.zip
+        asset_name: my-artifact.zip
+        asset_content_type: application/zip
