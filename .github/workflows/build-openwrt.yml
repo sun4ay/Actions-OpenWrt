@@ -6,20 +6,24 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build OpenWrt
+name: Build OpenWrt Release
 
 on: 
 #  release:
 #    types: [published]
-  push:
-    branches: 
-      - master
-    paths:
-      - '.config'
+#  push:
+#    branches:
+#      - master
+#    paths:
+#      - '.config'
 #  schedule:
 #    - cron: 0 8 * * 5
-  watch:
-    types: [started]
+#  watch:
+#    types: [started]
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build:
