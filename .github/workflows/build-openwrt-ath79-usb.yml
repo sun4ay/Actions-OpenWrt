@@ -6,22 +6,16 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build OpenWrt USB
+name: Build OpenWrt ATH79 USB
 
 on: 
 #  release:
 #    types: [published]
   push:
-#    branches:
-#      - master
     paths:
       - 'ath79_usb.config'
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-#  schedule:
-#    - cron: 0 8 * * 5
-#  watch:
-#    types: [started]
 
 jobs:
   build:
