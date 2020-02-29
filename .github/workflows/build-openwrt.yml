@@ -6,25 +6,25 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build OpenWrt
+name: Build OpenWrt MASTER
 
 on:
-  release:
-    types: published
+#  release:
+#    types: published
   push:
     branches:
       - master
     paths:
-      - '.config'
-#  schedule:
-#    - cron: 0 8 * * 5
+      - 'master.config'
+  schedule:
+    - cron: 0 7 * * *
 #  watch:
 #    types: started
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://github.com/a520ass/openwrt
   REPO_BRANCH: master
-  CONFIG_FILE: .config
+  CONFIG_FILE: master.config
   DIY_SH: diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
