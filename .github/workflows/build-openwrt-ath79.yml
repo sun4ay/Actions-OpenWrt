@@ -10,15 +10,13 @@ name: Build OpenWrt ATH79
 
 on:
   push:
-    paths:
-      - 'ath79.config'
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*-ath79' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 env:
   REPO_URL: https://github.com/a520ass/openwrt
   REPO_BRANCH: v19.07.2
-  CONFIG_FILE: .config
+  CONFIG_FILE: ath79.config
   DIY_SH: diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
