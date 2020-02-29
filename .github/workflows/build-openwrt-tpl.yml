@@ -6,17 +6,25 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build OpenWrt MASTER
+name: Build OpenWrt TPL
 
 on:
-  push:
-    tags:
-      - 'v*-master' # Push events to matching v*, i.e. v1.0, v20.15.10
+#  release:
+#    types: published
+#  push:
+#    branches:
+#      - master
+#    paths:
+#      - '.config'
+#  schedule:
+#    - cron: 0 8 * * 5
+  watch:
+    types: started
 
 env:
   REPO_URL: https://github.com/a520ass/openwrt
-  REPO_BRANCH: master
-  CONFIG_FILE: master.config
+  REPO_BRANCH: v19.07.2
+  CONFIG_FILE: .config
   DIY_SH: diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
@@ -39,7 +47,7 @@ jobs:
         sudo swapoff /swapfile
         sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
+        sudo -E apt-get -qq install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
@@ -86,7 +94,7 @@ jobs:
       uses: actions/upload-artifact@master
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: OpenWrt_bin
+        name: OpenWrt_directory
         path: openwrt/bin
 
     - name: Organize files
@@ -95,8 +103,6 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        # 删除 指定名称的文件
-        ls|grep "initramfs-kernel"|xargs rm -rf
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
 
@@ -110,7 +116,6 @@ jobs:
     - name: zip files # This would actually build your project, using zip for an example artifact
       run: |
         zip --junk-paths my-artifact ${{ env.FIRMWARE }}/*
-
 
     - name: Create Release
       id: create_release
