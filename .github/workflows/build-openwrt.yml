@@ -16,8 +16,9 @@ on:
       - master
     paths:
       - 'master.config'
+  # utc 时间 需要加8才是北京时间
   schedule:
-    - cron: 0 7 * * *
+    - cron: 0 18 * * *
 #  watch:
 #    types: started
 
@@ -103,6 +104,8 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
+        # 删除 指定名称的文件
+        ls|grep "initramfs-kernel"|xargs rm -rf
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
 
@@ -112,3 +115,17 @@ jobs:
       with:
         name: OpenWrt_firmware
         path: ${{ env.FIRMWARE }}
+
+    - name: zip files # This would actually build your project, using zip for an example artifact
+      run: |
+        zip --junk-paths my-artifact ${{ env.FIRMWARE }}/*
+
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        source: "my-artifact.zip"
+        target: "/root"
