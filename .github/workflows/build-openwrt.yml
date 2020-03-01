@@ -103,6 +103,10 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
+        # 删除 除了以下这些固件 -v
+        ls|grep -v "sha256sums"|grep -v "tplink_tl-wr886n-v2"|grep -v "tplink_tl-wr845n-v3"|grep -v "tplink_tl-wr941n-v5-cn"|grep -v "mercury_mw150r-v10"|grep -v "netgear_jnr3300-v1"|xargs rm -rf
+        # 删除 指定名称的文件
+        ls|grep "initramfs-kernel"|xargs rm -rf
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
 
