@@ -9,18 +9,9 @@
 name: Build OpenWrt MASTER
 
 on:
-#  release:
-#    types: published
   push:
-    branches:
-      - master
-    paths:
-      - 'master.config'
-  # utc 时间 需要加8才是北京时间
-  schedule:
-    - cron: 0 18 * * *
-#  watch:
-#    types: started
+    tags:
+      - 'v*-master' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 env:
   REPO_URL: https://github.com/a520ass/openwrt
@@ -120,12 +111,25 @@ jobs:
       run: |
         zip --junk-paths my-artifact ${{ env.FIRMWARE }}/*
 
-    - name: copy file via ssh password
-      uses: appleboy/scp-action@master
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        source: "my-artifact.zip"
-        target: "/root"
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_path: ./my-artifact.zip
+        asset_name: my-artifact.zip
+        asset_content_type: application/zip
