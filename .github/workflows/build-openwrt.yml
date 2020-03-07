@@ -97,6 +97,7 @@ jobs:
         rm -rf packages
         # 删除 指定名称的文件
         ls|grep "initramfs-kernel"|xargs rm -rf
+        ls|grep "squashfs-factory"|xargs rm -rf
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
 
