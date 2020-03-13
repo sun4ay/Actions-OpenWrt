@@ -16,9 +16,9 @@ EOF
 # LuCI支持
 cat >> .config <<EOF
 CONFIG_PACKAGE_luci=y
-CONFIG_LUCI_LANG_zh-cn=y
-CONFIG_PACKAGE_luci-app-flowoffload=y
-CONFIG_PACKAGE_luci-app-fullconenat=y
+CONFIG_LUCI_LANG_zh_Hans=y
+CONFIG_PACKAGE_luci-app-flowoffload=m
+CONFIG_PACKAGE_luci-app-fullconenat=m
 CONFIG_PACKAGE_luci-app-ramfree=y
 CONFIG_PACKAGE_luci-app-uhttpd=y
 CONFIG_PACKAGE_luci-app-upnp=y
