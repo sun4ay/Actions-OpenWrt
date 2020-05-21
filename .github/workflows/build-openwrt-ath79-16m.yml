@@ -6,17 +6,17 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build OpenWrt RAMIPS USB
+name: Build OpenWrt ATH79 16M
 
 on:
   push:
     tags:
-      - 'v*-ramips-usb' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*-ath79-usb' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 env:
   REPO_URL: https://github.com/a520ass/openwrt
-  REPO_BRANCH: v19.07.2
-  CONFIG_FILE: ramips-usb.config
+  REPO_BRANCH: v19.07.3-16m
+  CONFIG_FILE: ath79-16m.config
   DIY_SH: diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
