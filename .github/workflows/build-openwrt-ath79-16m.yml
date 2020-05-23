@@ -11,7 +11,7 @@ name: Build OpenWrt ATH79 16M
 on:
   push:
     tags:
-      - 'v*-ath79-usb' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*-ath79-16m' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 env:
   REPO_URL: https://github.com/a520ass/openwrt
