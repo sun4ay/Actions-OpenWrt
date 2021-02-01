@@ -26,7 +26,7 @@ on:
 
 env:
   REPO_URL: https://github.com/a520ass/openwrt
-  REPO_BRANCH: v19.07.5
+  REPO_BRANCH: v19.07.6
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: ath79.config
   DIY_P1_SH: diy-part1.sh
@@ -182,7 +182,7 @@ jobs:
           files: ${{ env.FIRMWARE }}/*
 
       - name: Delete workflow runs
-        uses: ActionsRML/delete-workflow-runs@main
+        uses: GitRML/delete-workflow-runs@main
         with:
           retain_days: 1
           keep_minimum_runs: 3
